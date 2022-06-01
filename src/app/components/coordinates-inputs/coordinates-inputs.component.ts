@@ -22,6 +22,10 @@ export class CoordinatesInputsComponent implements OnInit {
     this.centroidService.removeCoordinate(coordinate)
   }
 
+  calculateCentroid() {
+    this.centroidService.calcCentroid()
+  }
+
   get coordinates(): CoordinatesModel[] {
     return this.centroidService.coordinates
   }

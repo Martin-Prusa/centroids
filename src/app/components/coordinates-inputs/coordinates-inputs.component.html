@@ -1,21 +1,29 @@
 <div class="mt-3">
   <h2 class="text-primary">Add coordinates: </h2>
-  <div class="d-flex ms-5 flex-column h5 gap-3">
-    <form class="d-flex flex-column">
+  <div class="d-flex ms-5 flex-column gap-3">
+    <form #coordinatesForm=ngForm class="d-flex flex-column">
       <div *ngFor="let coordinate of coordinates; let i = index">
         <div class="d-flex gap-3 mb-3">
           <div class=" form-group">
-            <label [attr.for]="'x'+i">X-{{i+1}}</label>
-            <input [(ngModel)]="coordinate.x" type="number" [attr.id]="'x'+i" [ngModelOptions]="{standalone: true}" class="form-control">
+            <label [attr.for]="'x'+i" class="h5">X-{{i + 1}}</label>
+            <input #xInput=ngModel [(ngModel)]="coordinate.x" [name]="'x'+i" required pattern="^[0-9.]+$" type="text" [attr.id]="'x'+i"
+                    class="form-control">
+            <span *ngIf="xInput.errors?.['required'] && xInput.touched" class="text-danger">X is required</span>
+            <span *ngIf="!xInput.errors?.['required'] && xInput.errors?.['pattern'] && xInput.touched" class="text-danger">X must be number</span>
           </div>
           <div class=" form-group">
-            <label [attr.for]="'y'+i">Y-{{i+1}}</label>
-            <input [(ngModel)]="coordinate.y" type="number" [attr.id]="'y'+i" [ngModelOptions]="{standalone: true}" class="form-control">
+            <label [attr.for]="'y'+i" class="h5">Y-{{i + 1}}</label>
+            <input #yInput=ngModel [(ngModel)]="coordinate.y" [name]="'y'+i" required pattern="^[0-9.]+$" type="text" [attr.id]="'y'+i"
+                    class="form-control">
+            <span *ngIf="yInput.errors?.['required'] && yInput.touched" class="text-danger">Y is required</span>
+            <span *ngIf="!yInput.errors?.['required'] && yInput.errors?.['pattern'] && yInput.touched" class="text-danger">Y must be number</span>
           </div>
-          <div (click)="remove(coordinate)" *ngIf="i !== 0" class="btn btn-danger h-50 mt-auto">Delete Coordinates</div>
+          <div (click)="remove(coordinate)" *ngIf="i !== 0" class="btn btn-danger h-50 mt-3">X</div>
         </div>
       </div>
       <div (click)="add()" class="btn btn-primary">Add Coordinates</div>
+      <button (click)="calculateCentroid()" [disabled]="coordinatesForm.invalid" class="btn btn-success mt-3">Calculate Centroid</button>
+      <span>{{coordinatesForm.errors}}</span>
     </form>
   </div>
 </div>

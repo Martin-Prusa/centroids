@@ -7,6 +7,7 @@ import {CoordinatesModel} from "../models/coordinates.model";
 export class CentroidService {
 
   private readonly _coordinates: CoordinatesModel[] = []
+  private _centroid: CoordinatesModel | null = null
 
   constructor() {
     this._coordinates.push(new CoordinatesModel())
@@ -20,15 +21,22 @@ export class CentroidService {
     this._coordinates.splice(this._coordinates.indexOf(coordinate), 1)
   }
 
+  calcCentroid() {
+    this._centroid = new CoordinatesModel()
+    this._centroid.x = this._coordinates.reduce((previousValue, currentValue) => previousValue + (+currentValue.x!!), 0) / this._coordinates.length
+    this._centroid.y = this._coordinates.reduce((previousValue, currentValue) => previousValue + (+currentValue.y!!), 0) / this._coordinates.length
+  }
+
+  get isCentroidPresent() {
+    return this._centroid !== null
+  }
+
   get coordinates() {
     return this._coordinates
   }
 
   get centroid() {
-    const coords = new CoordinatesModel()
-    coords.x = this._coordinates.reduce((previousValue, currentValue) => previousValue + currentValue.x, 0) / this._coordinates.length
-    coords.y = this._coordinates.reduce((previousValue, currentValue) => previousValue + currentValue.y, 0) / this._coordinates.length
-    return coords
+    return this._centroid
   }
 
 

@@ -1,4 +1,4 @@
 export class CoordinatesModel {
-  public x: number = 0
-  public y: number = 0
+  public x: number | null = null
+  public y: number | null = null
 }
